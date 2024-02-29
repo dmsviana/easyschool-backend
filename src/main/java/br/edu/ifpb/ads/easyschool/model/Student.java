@@ -1,16 +1,14 @@
 package br.edu.ifpb.ads.easyschool.model;
 
-import br.edu.ifpb.ads.easyschool.model.types.UserRole;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -43,5 +41,8 @@ public class Student {
     @Column(nullable = false)
     private String phoneNumber;
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Fee> fees = new ArrayList<>();
 
 }

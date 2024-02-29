@@ -6,8 +6,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Data
 @NoArgsConstructor
 public class StudentRequestDTO {
@@ -33,6 +31,5 @@ public class StudentRequestDTO {
     @NotBlank(message = "O campo telefone não pode ser vazio.")
     @Size(min = 11, max = 11, message = "O telefone deve ter 11 dígitos.")
     private String phoneNumber;
-
 
 }

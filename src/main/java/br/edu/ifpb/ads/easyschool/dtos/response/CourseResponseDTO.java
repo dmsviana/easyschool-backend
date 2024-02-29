@@ -18,8 +18,6 @@ public class CourseResponseDTO {
     private String name;
     private String description;
     private List<DayOfWeek> daysOfWeek;
-    private LocalTime startTime;
-    private LocalTime endTime;
     private int maxCapacity;
     private List<Student> students;
 

@@ -68,7 +68,6 @@ public class CourseService {
         course.setName(cursoRequest.getName());
         course.setDescription(cursoRequest.getDescription());
         course.setDaysOfWeek(cursoRequest.getDaysOfWeek());
-        course.setStartTime(cursoRequest.getStartTime());
         course.setMaxCapacity(cursoRequest.getMaxCapacity());
 
         Course updatedCourse = courseRepository.save(course);

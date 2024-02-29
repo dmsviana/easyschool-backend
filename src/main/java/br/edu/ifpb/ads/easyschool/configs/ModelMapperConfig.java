@@ -1,4 +1,4 @@
-package br.edu.ifpb.ads.easyschool.config;
+package br.edu.ifpb.ads.easyschool.configs;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

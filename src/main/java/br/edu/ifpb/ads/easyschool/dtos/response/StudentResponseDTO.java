@@ -1,7 +1,10 @@
 package br.edu.ifpb.ads.easyschool.dtos.response;
 
+import br.edu.ifpb.ads.easyschool.model.Fee;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,6 +16,7 @@ public class StudentResponseDTO {
     private String email;
     private String registration;
     private String phoneNumber;
+    private List<Fee> fees;
 
 
     /*

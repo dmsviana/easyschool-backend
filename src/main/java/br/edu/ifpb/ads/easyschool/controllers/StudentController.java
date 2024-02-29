@@ -3,17 +3,12 @@ package br.edu.ifpb.ads.easyschool.controllers;
 import java.util.List;
 
 import br.edu.ifpb.ads.easyschool.dtos.response.StudentResponseDTO;
+import br.edu.ifpb.ads.easyschool.services.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.edu.ifpb.ads.easyschool.dtos.request.StudentRequestDTO;
 import br.edu.ifpb.ads.easyschool.dtos.request.StudentUpdateRequestDTO;
@@ -32,10 +27,11 @@ public class StudentController {
     }
 
     //@PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<StudentResponseDTO> createStudent(@RequestBody @Valid StudentRequestDTO student){
         String encryptedPassword = new BCryptPasswordEncoder().encode(student.getPassword());
         student.setPassword(encryptedPassword);
+
         var createdStudent = studentService.createStudent(student);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
     }
