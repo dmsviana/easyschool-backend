@@ -29,7 +29,7 @@ public class Student {
     private String email;
 
     @Column(length = 100, nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //controlar a visibilidade de serialização e deserialização de objetos para json (nesse caso, ignorar o campo 'senha' ao devolver a resposta no json)
     private String password;
 
     @Column(length = 100, nullable = false)
