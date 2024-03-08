@@ -1,21 +1,20 @@
 package br.edu.ifpb.ads.easyschool.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import br.edu.ifpb.ads.easyschool.dtos.request.CourseRequestDTO;
 import br.edu.ifpb.ads.easyschool.dtos.response.CourseResponseDTO;
+import br.edu.ifpb.ads.easyschool.exception.CourseAlreadyExistsException;
+import br.edu.ifpb.ads.easyschool.exception.CourseNotFoundException;
+import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
 import br.edu.ifpb.ads.easyschool.model.Course;
 import br.edu.ifpb.ads.easyschool.model.Student;
+import br.edu.ifpb.ads.easyschool.repositories.CourseRepository;
+import br.edu.ifpb.ads.easyschool.repositories.StudentRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import br.edu.ifpb.ads.easyschool.dtos.request.CourseRequestDTO;
-import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
-import br.edu.ifpb.ads.easyschool.exception.CourseAlreadyExistsException;
-import br.edu.ifpb.ads.easyschool.exception.CourseNotFoundException;
-import br.edu.ifpb.ads.easyschool.repositories.StudentRepository;
-import br.edu.ifpb.ads.easyschool.repositories.CourseRepository;
-import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CourseService {

@@ -1,7 +1,7 @@
 package br.edu.ifpb.ads.easyschool.handler;
 
-import java.util.stream.Collectors;
-
+import br.edu.ifpb.ads.easyschool.exception.StudentAlreadyExistsException;
+import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
 import org.apache.coyote.BadRequestException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import br.edu.ifpb.ads.easyschool.exception.StudentAlreadyExistsException;
-import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

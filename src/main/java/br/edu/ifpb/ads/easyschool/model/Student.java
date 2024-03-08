@@ -45,4 +45,7 @@ public class Student {
     @JsonManagedReference
     private List<Fee> fees = new ArrayList<>();
 
+    private boolean admin;
+
+
 }

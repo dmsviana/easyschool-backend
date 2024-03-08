@@ -1,9 +1,9 @@
 package br.edu.ifpb.ads.easyschool.handler;
 
+import lombok.Data;
+
 import java.util.Arrays;
 import java.util.List;
-
-import lombok.Data;
 
 @Data
 public class ApiErrors {

@@ -1,13 +1,11 @@
 package br.edu.ifpb.ads.easyschool.dtos.response;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.util.List;
-
-import br.edu.ifpb.ads.easyschool.model.Course;
 import br.edu.ifpb.ads.easyschool.model.Student;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.DayOfWeek;
+import java.util.List;
 
 @Data
 @NoArgsConstructor

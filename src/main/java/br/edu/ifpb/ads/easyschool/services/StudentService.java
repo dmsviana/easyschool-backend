@@ -1,22 +1,21 @@
 package br.edu.ifpb.ads.easyschool.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import br.edu.ifpb.ads.easyschool.dtos.request.StudentRequestDTO;
+import br.edu.ifpb.ads.easyschool.dtos.request.StudentUpdateRequestDTO;
 import br.edu.ifpb.ads.easyschool.dtos.response.StudentResponseDTO;
+import br.edu.ifpb.ads.easyschool.exception.StudentAlreadyExistsException;
+import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
 import br.edu.ifpb.ads.easyschool.model.Student;
 import br.edu.ifpb.ads.easyschool.producers.StudentProducer;
 import br.edu.ifpb.ads.easyschool.repositories.CourseRepository;
+import br.edu.ifpb.ads.easyschool.repositories.StudentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
-import br.edu.ifpb.ads.easyschool.dtos.request.StudentRequestDTO;
-import br.edu.ifpb.ads.easyschool.dtos.request.StudentUpdateRequestDTO;
-import br.edu.ifpb.ads.easyschool.exception.StudentAlreadyExistsException;
-import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
-import br.edu.ifpb.ads.easyschool.repositories.StudentRepository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class StudentService {

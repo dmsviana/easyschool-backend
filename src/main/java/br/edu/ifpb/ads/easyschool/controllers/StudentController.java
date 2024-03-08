@@ -1,22 +1,19 @@
 package br.edu.ifpb.ads.easyschool.controllers;
 
-import java.util.List;
-
+import br.edu.ifpb.ads.easyschool.dtos.request.StudentRequestDTO;
+import br.edu.ifpb.ads.easyschool.dtos.request.StudentUpdateRequestDTO;
 import br.edu.ifpb.ads.easyschool.dtos.response.StudentResponseDTO;
-import br.edu.ifpb.ads.easyschool.services.CourseService;
+import br.edu.ifpb.ads.easyschool.services.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import br.edu.ifpb.ads.easyschool.dtos.request.StudentRequestDTO;
-import br.edu.ifpb.ads.easyschool.dtos.request.StudentUpdateRequestDTO;
-import br.edu.ifpb.ads.easyschool.services.StudentService;
-import jakarta.validation.Valid;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/v1/api/students")
 public class StudentController {
     
 

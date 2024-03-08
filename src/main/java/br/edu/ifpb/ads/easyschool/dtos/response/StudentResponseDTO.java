@@ -17,6 +17,7 @@ public class StudentResponseDTO {
     private String registration;
     private String phoneNumber;
     private List<Fee> fees;
+    private boolean admin;
 
 
     /*
