@@ -1,4 +1,4 @@
-package br.edu.ifpb.ads.easyschool.dtos.response;
+package br.edu.ifpb.ads.easyschool.controllers.dtos.response;
 
 import br.edu.ifpb.ads.easyschool.model.Student;
 import lombok.Data;

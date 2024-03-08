@@ -1,7 +1,7 @@
 package br.edu.ifpb.ads.easyschool.producers;
 
 
-import br.edu.ifpb.ads.easyschool.dtos.request.EmailDto;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.EmailDto;
 import br.edu.ifpb.ads.easyschool.model.Student;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ public class StudentProducer {
     private String routingKey;
 
     public void publishMessageEmail(Student student){
-        var emailDto = new EmailDto();
+        EmailDto emailDto = new EmailDto();
         emailDto.setStudentId(student.getId());
         emailDto.setEmailTo(student.getEmail());
         emailDto.setSubject("Agradecemos sua inscrição");

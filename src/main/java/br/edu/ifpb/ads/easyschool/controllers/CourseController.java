@@ -1,46 +1,53 @@
 package br.edu.ifpb.ads.easyschool.controllers;
 
-import br.edu.ifpb.ads.easyschool.dtos.request.CourseRequestDTO;
-import br.edu.ifpb.ads.easyschool.dtos.response.CourseResponseDTO;
-import br.edu.ifpb.ads.easyschool.services.CourseService;
-import br.edu.ifpb.ads.easyschool.services.StudentService;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.CoursePostRequestDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.response.CourseResponseDTO;
+import br.edu.ifpb.ads.easyschool.services.CourseService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/v1/api/courses")
+@RequiredArgsConstructor
 public class CourseController {
     
 
     private final CourseService courseService;
-    private final StudentService studentService;
 
-    public CourseController(CourseService courseService, StudentService studentService) {
-        this.courseService = courseService;
-        this.studentService = studentService;
-    }
-
-
+    @ResponseStatus(CREATED)
     @PostMapping
-    public ResponseEntity<CourseResponseDTO> createCourse(@RequestBody @Valid CourseRequestDTO courseRequestDTO){
+    public CourseResponseDTO createCourse(@RequestBody @Valid CoursePostRequestDTO courseRequestDTO){
         CourseResponseDTO course = courseService.createCourse(courseRequestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(course);
+        return course;
     }
 
+    @ResponseStatus(OK)
     @GetMapping("/get-all")
-    public ResponseEntity<List<CourseResponseDTO>> findAllCourses(){
+    public List<CourseResponseDTO> findAllCourses(){
         List<CourseResponseDTO> coursesList = courseService.findAllCourses();
-        return ResponseEntity.status(HttpStatus.OK).body(coursesList);
+        return coursesList;
     }
 
+    @ResponseStatus(OK)
     @GetMapping("/{courseId}")
-    public ResponseEntity<CourseResponseDTO> findCourseById(@PathVariable Long courseId){
+    public CourseResponseDTO findCourseById(@PathVariable Long courseId){
         CourseResponseDTO course = courseService.findCourseById(courseId);
-        return ResponseEntity.status(HttpStatus.OK).body(course);
+        return course;
     }
 
     /* 
@@ -55,22 +62,22 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.OK).body(listaResponse);
     } */
 
+    @ResponseStatus(NO_CONTENT)
     @PostMapping("/{courseId}/associate/{studentId}")
-    public ResponseEntity<Void> associateStudentToCourse(@PathVariable Long courseId, @PathVariable Long studentId) {
+    public void associateStudentToCourse(@PathVariable Long courseId, @PathVariable Long studentId) {
         courseService.associateStudentToCourse(studentId, courseId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{courseId}/desassociate/{studentId}")
-    public ResponseEntity<Void> desassociateStudentToCourse(@PathVariable Long courseId, @PathVariable Long studentId){
+    public void desassociateStudentToCourse(@PathVariable Long courseId, @PathVariable Long studentId){
         courseService.desassociateStudentToCourse(studentId, courseId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{courseId}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable Long courseId){
+    public void deleteCourse(@PathVariable Long courseId){
         courseService.deleteCourse(courseId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     

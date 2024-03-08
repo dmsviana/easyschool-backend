@@ -1,4 +1,4 @@
-package br.edu.ifpb.ads.easyschool.dtos.request;
+package br.edu.ifpb.ads.easyschool.controllers.dtos.request;
 
 import lombok.Getter;
 import lombok.Setter;

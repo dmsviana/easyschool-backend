@@ -1,7 +1,8 @@
 package br.edu.ifpb.ads.easyschool.services;
 
-import br.edu.ifpb.ads.easyschool.dtos.request.CourseRequestDTO;
-import br.edu.ifpb.ads.easyschool.dtos.response.CourseResponseDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.CoursePostRequestDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.CourseUpdateRequestDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.response.CourseResponseDTO;
 import br.edu.ifpb.ads.easyschool.exception.CourseAlreadyExistsException;
 import br.edu.ifpb.ads.easyschool.exception.CourseNotFoundException;
 import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
@@ -29,7 +30,7 @@ public class CourseService {
         this.mapper = mapper;
     }
 
-    public CourseResponseDTO createCourse(CourseRequestDTO courseRequest) {
+    public CourseResponseDTO createCourse(CoursePostRequestDTO courseRequest) {
         if (courseRepository.findByName(courseRequest.getName()).isPresent()) {
             throw new CourseAlreadyExistsException("Curso com nome " + courseRequest.getName() + " já existe");
         }
@@ -59,13 +60,11 @@ public class CourseService {
         return coursesListDTO;
     }
 
-    public CourseResponseDTO updateCourse(Long id, CourseRequestDTO cursoRequest) {
+    public CourseResponseDTO updateCourse(Long id, CourseUpdateRequestDTO cursoRequest) {
 
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new CourseNotFoundException("Curso não encontrado."));
 
-        course.setName(cursoRequest.getName());
-        course.setDescription(cursoRequest.getDescription());
         course.setDaysOfWeek(cursoRequest.getDaysOfWeek());
         course.setMaxCapacity(cursoRequest.getMaxCapacity());
 

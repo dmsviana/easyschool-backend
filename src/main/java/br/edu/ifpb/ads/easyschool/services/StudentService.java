@@ -1,8 +1,8 @@
 package br.edu.ifpb.ads.easyschool.services;
 
-import br.edu.ifpb.ads.easyschool.dtos.request.StudentRequestDTO;
-import br.edu.ifpb.ads.easyschool.dtos.request.StudentUpdateRequestDTO;
-import br.edu.ifpb.ads.easyschool.dtos.response.StudentResponseDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.StudentPostRequestDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.StudentUpdateRequestDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.response.StudentResponseDTO;
 import br.edu.ifpb.ads.easyschool.exception.StudentAlreadyExistsException;
 import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
 import br.edu.ifpb.ads.easyschool.model.Student;
@@ -38,7 +38,7 @@ public class StudentService {
     }
 
     @Transactional
-    public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {
+    public StudentResponseDTO createStudent(StudentPostRequestDTO studentRequestDTO) {
         
         if (studentRepository.findByEmail(studentRequestDTO.getEmail()).isPresent()) {
             throw new StudentAlreadyExistsException("Aluno com email " + studentRequestDTO.getEmail() + " já existe");

@@ -1,16 +1,16 @@
-package br.edu.ifpb.ads.easyschool.dtos.request;
+package br.edu.ifpb.ads.easyschool.controllers.dtos.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class StudentRequestDTO {
-    
+public class StudentPostRequestDTO {
 
     @NotBlank(message = "O campo nome não pode ser vazio.")
     private String name;
@@ -28,12 +28,11 @@ public class StudentRequestDTO {
 
     @NotBlank(message = "O campo matrícula não pode ser vazio.")
     private String registration;
-    
+
     @NotBlank(message = "O campo telefone não pode ser vazio.")
     @Size(min = 11, max = 11, message = "O telefone deve ter 11 dígitos.")
     private String phoneNumber;
 
-    @NonNull
     private boolean admin;
 
 }
