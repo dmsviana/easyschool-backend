@@ -8,8 +8,7 @@
 	🚧  Easy! em construção...  🚧
 </h4>
 
-## Imagens
+## Imagens do front-end consumindo esta API
 ![Login.](https://imgur.com/eYXX8RR.jpg "This is a login page.")
 ![Dashboard.](https://imgur.com/QyLYd0W.jpg "This is a dashboard page.")
-
 
