@@ -5,18 +5,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_students")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Student {
-    
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,14 +40,13 @@ public class Student {
     @Column(nullable = false)
     private String registration;
 
-    @Column(nullable = false)
+    @Column(length = 11, nullable = false)
     private String phoneNumber;
 
+    private boolean admin;
+    
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Fee> fees = new ArrayList<>();
-
-    private boolean admin;
-
 
 }

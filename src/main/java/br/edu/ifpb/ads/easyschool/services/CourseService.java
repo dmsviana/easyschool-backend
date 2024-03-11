@@ -11,6 +11,8 @@ import br.edu.ifpb.ads.easyschool.model.Student;
 import br.edu.ifpb.ads.easyschool.repositories.CourseRepository;
 import br.edu.ifpb.ads.easyschool.repositories.StudentRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -18,17 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CourseService {
 
     private final CourseRepository courseRepository;
     private final StudentRepository studentRepository;
     private final ModelMapper mapper;
 
-    public CourseService(CourseRepository courseRepository, StudentRepository studentRepository, ModelMapper mapper) {
-        this.courseRepository = courseRepository;
-        this.studentRepository = studentRepository;
-        this.mapper = mapper;
-    }
 
     public CourseResponseDTO createCourse(CoursePostRequestDTO courseRequest) {
         if (courseRepository.findByName(courseRequest.getName()).isPresent()) {

@@ -5,7 +5,8 @@ import static org.springframework.http.HttpStatus.OK;
 
 import java.util.List;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,19 +29,17 @@ import lombok.RequiredArgsConstructor;
 public class StudentController {
 
     private final StudentService studentService;
+    private final ModelMapper mapper;
 
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(CREATED)
     @PostMapping()
     public StudentResponseDTO createStudent(@RequestBody @Valid StudentPostRequestDTO student) {
-        String encryptedPassword = new BCryptPasswordEncoder().encode(student.getPassword());
-        student.setPassword(encryptedPassword);
-
         var createdStudent = studentService.createStudent(student);
         return createdStudent;
     }
 
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(OK)
     @GetMapping("/get-all")
     public List<StudentResponseDTO> findAllStudents() {
@@ -49,14 +48,23 @@ public class StudentController {
     }
 
     @ResponseStatus(OK)
+    @GetMapping("login/{login}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public StudentResponseDTO findByUsername(@PathVariable final String username) {
+        final var student = studentService.findByUsername(username);
+        return mapper.map(student, StudentResponseDTO.class);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(OK)
     @GetMapping("/{studentId}")
     public StudentResponseDTO findStudentById(@PathVariable Long studentId) {
         return studentService.findStudentById(studentId);
     }
 
-    // @PreAuthorize("@studentService.isCurrentUser(principal, #studentId)")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(OK)
-    @PutMapping("/{studentId}") // Only allow updates to self
+    @PutMapping("/{studentId}") 
     public StudentResponseDTO updateStudent(@PathVariable Long studentId,
             @RequestBody @Valid StudentUpdateRequestDTO student) {
         return studentService.updateStudent(studentId, student);

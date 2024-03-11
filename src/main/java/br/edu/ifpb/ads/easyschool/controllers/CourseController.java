@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class CourseController {
 
     private final CourseService courseService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(CREATED)
     @PostMapping
     public CourseResponseDTO createCourse(@RequestBody @Valid CoursePostRequestDTO courseRequestDTO){
@@ -49,31 +51,22 @@ public class CourseController {
         CourseResponseDTO course = courseService.findCourseById(courseId);
         return course;
     }
-
-    /* 
-    @GetMapping("/{cursoId}/alunos")
-    public ResponseEntity<List<StudentResponseDTO>> buscarAlunosPorCurso(@PathVariable Long cursoId){
-        CourseResponseDTO curso = cursoService.buscarCursoPorId(cursoId);
     
-        List<StudentResponseDTO> listaResponse = alunoService.buscarTodosAlunos();
-        for (StudentResponseDTO aluno : listaResponse) {
-            listaResponse.add(aluno);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(listaResponse);
-    } */
-
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(NO_CONTENT)
     @PostMapping("/{courseId}/associate/{studentId}")
     public void associateStudentToCourse(@PathVariable Long courseId, @PathVariable Long studentId) {
         courseService.associateStudentToCourse(studentId, courseId);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{courseId}/desassociate/{studentId}")
     public void desassociateStudentToCourse(@PathVariable Long courseId, @PathVariable Long studentId){
         courseService.desassociateStudentToCourse(studentId, courseId);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{courseId}")
     public void deleteCourse(@PathVariable Long courseId){

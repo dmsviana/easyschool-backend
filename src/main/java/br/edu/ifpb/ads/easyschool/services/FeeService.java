@@ -1,31 +1,26 @@
 package br.edu.ifpb.ads.easyschool.services;
 
 
-import br.edu.ifpb.ads.easyschool.model.Fee;
-import br.edu.ifpb.ads.easyschool.model.Student;
-import br.edu.ifpb.ads.easyschool.model.types.PaymentStatus;
-import br.edu.ifpb.ads.easyschool.repositories.FeeRepository;
-import br.edu.ifpb.ads.easyschool.repositories.StudentRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+import br.edu.ifpb.ads.easyschool.model.Fee;
+import br.edu.ifpb.ads.easyschool.model.Student;
+import br.edu.ifpb.ads.easyschool.model.types.PaymentStatus;
+import br.edu.ifpb.ads.easyschool.repositories.FeeRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class FeeService {
 
     private final FeeRepository feeRepository;
-    private final StudentRepository studentRepository;
-
-
-    public FeeService(FeeRepository feeRepository, StudentRepository studentRepository) {
-        this.feeRepository = feeRepository;
-        this.studentRepository = studentRepository;
-    }
 
     public void generateFees(Student student){
 
@@ -42,6 +37,10 @@ public class FeeService {
         feeRepository.saveAll(fees);
     }
 
+    public List<Fee> findAll(){
+        return feeRepository.findAll();
+    }
+
     public void updateStatus(Fee fee){
         fee.setPaymentStatus(PaymentStatus.OVERDUE);
     }
@@ -51,5 +50,17 @@ public class FeeService {
         overdueFees.forEach(this::updateStatus);
 
         feeRepository.saveAll(overdueFees);
+    }
+
+    public BigDecimal findTotalFeePrice() {
+        return feeRepository.findAll().stream()
+                .map(Fee::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public Long countByPaymentStatus(PaymentStatus pending) {
+        return feeRepository.findAll().stream()
+                .filter(fee -> fee.getPaymentStatus().equals(pending))
+                .count();
     }
 }

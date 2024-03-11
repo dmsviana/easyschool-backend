@@ -1,5 +1,15 @@
 package br.edu.ifpb.ads.easyschool.services;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import br.edu.ifpb.ads.easyschool.controllers.dtos.request.StudentPostRequestDTO;
 import br.edu.ifpb.ads.easyschool.controllers.dtos.request.StudentUpdateRequestDTO;
 import br.edu.ifpb.ads.easyschool.controllers.dtos.response.StudentResponseDTO;
@@ -7,35 +17,18 @@ import br.edu.ifpb.ads.easyschool.exception.StudentAlreadyExistsException;
 import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
 import br.edu.ifpb.ads.easyschool.model.Student;
 import br.edu.ifpb.ads.easyschool.producers.StudentProducer;
-import br.edu.ifpb.ads.easyschool.repositories.CourseRepository;
 import br.edu.ifpb.ads.easyschool.repositories.StudentRepository;
-import org.modelmapper.ModelMapper;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class StudentService {
 
     private final StudentRepository studentRepository;
-    private final CourseRepository courseRepository;
-
     private final FeeService feeService;
     private final ModelMapper mapper;
-
     private final StudentProducer studentProducer;
 
-
-    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository, FeeService feeService, StudentProducer studentProducer, ModelMapper mapper) {
-        this.studentRepository = studentRepository;
-        this.courseRepository = courseRepository;
-        this.feeService = feeService;
-        this.studentProducer = studentProducer;
-        this.mapper = mapper;
-    }
 
     @Transactional
     public StudentResponseDTO createStudent(StudentPostRequestDTO studentRequestDTO) {
@@ -48,6 +41,8 @@ public class StudentService {
         feeService.generateFees(createdStudent);
         createdStudent = studentRepository.save(createdStudent);
         studentProducer.publishMessageEmail(createdStudent);
+        createdStudent.setPassword(new BCryptPasswordEncoder().encode(createdStudent.getPassword()));
+
         return mapper.map(createdStudent, StudentResponseDTO.class);
     }
 
@@ -93,9 +88,11 @@ public class StudentService {
     }
 
 
-    public boolean isCurrentUser(Authentication authentication, Long studentId) {
-        Long currentUserId = Long.valueOf(authentication.getName());
-        return studentId.equals(currentUserId);
+    public StudentResponseDTO findByUsername(String name) {
+        final var student = studentRepository.findByUsername(name)
+                .orElseThrow(() -> new StudentNotFoundException("Aluno não encontrado."));
+        return mapper.map(student, StudentResponseDTO.class);
     }
+
 
 }

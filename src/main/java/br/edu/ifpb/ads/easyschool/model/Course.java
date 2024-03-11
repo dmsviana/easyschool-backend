@@ -39,7 +39,6 @@ public class Course {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Student> students;
 
-
     @PrePersist
     public void prePersist() {
         if (students == null) {
