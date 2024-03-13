@@ -1,15 +1,21 @@
 package br.edu.ifpb.ads.easyschool.handler;
 
-import br.edu.ifpb.ads.easyschool.exception.PermissionDeniedException;
-import br.edu.ifpb.ads.easyschool.exception.StudentAlreadyExistsException;
-import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
+import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.naming.NoPermissionException;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.support.MethodArgumentTypeMismatchException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,19 +25,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
-import java.io.FileNotFoundException;
-import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import javax.naming.NoPermissionException;
+import br.edu.ifpb.ads.easyschool.exception.PermissionDeniedException;
+import br.edu.ifpb.ads.easyschool.exception.StudentAlreadyExistsException;
+import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
