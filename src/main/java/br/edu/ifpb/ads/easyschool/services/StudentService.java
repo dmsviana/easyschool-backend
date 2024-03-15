@@ -1,18 +1,16 @@
 package br.edu.ifpb.ads.easyschool.services;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.edu.ifpb.ads.easyschool.controllers.dtos.request.StudentPostRequestDTO;
-import br.edu.ifpb.ads.easyschool.controllers.dtos.request.StudentUpdateRequestDTO;
-import br.edu.ifpb.ads.easyschool.controllers.dtos.response.StudentResponseDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.student.StudentPostRequestDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.student.StudentUpdateRequestDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.response.ManagerResponseDTO;
 import br.edu.ifpb.ads.easyschool.exception.StudentAlreadyExistsException;
 import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
 import br.edu.ifpb.ads.easyschool.model.Student;
@@ -31,7 +29,7 @@ public class StudentService {
 
 
     @Transactional
-    public StudentResponseDTO createStudent(StudentPostRequestDTO studentRequestDTO) {
+    public ManagerResponseDTO createStudent(StudentPostRequestDTO studentRequestDTO) {
         
         if (studentRepository.findByEmail(studentRequestDTO.getEmail()).isPresent()) {
             throw new StudentAlreadyExistsException("Aluno com email " + studentRequestDTO.getEmail() + " já existe");
@@ -43,34 +41,34 @@ public class StudentService {
         studentProducer.publishMessageEmail(createdStudent);
         createdStudent.setPassword(new BCryptPasswordEncoder().encode(createdStudent.getPassword()));
 
-        return mapper.map(createdStudent, StudentResponseDTO.class);
+        return mapper.map(createdStudent, ManagerResponseDTO.class);
     }
 
 
-    public List<StudentResponseDTO> findAllStudents(){
+    public List<ManagerResponseDTO> findAllStudents(){
         List<Student> studentsList = studentRepository.findAll();
 
-        List<StudentResponseDTO> studentsListDTO = new ArrayList<>();
+        List<ManagerResponseDTO> studentsListDTO = new ArrayList<>();
         
         for (Student student : studentsList) {
-            studentsListDTO.add(mapper.map(student, StudentResponseDTO.class));
+            studentsListDTO.add(mapper.map(student, ManagerResponseDTO.class));
         }
 
         return studentsListDTO;
     }
 
-    public StudentResponseDTO findStudentById(Long id){
+    public ManagerResponseDTO findStudentById(Long id){
         Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("Aluno não encontrado."));
-        return mapper.map(student, StudentResponseDTO.class);
+        return mapper.map(student, ManagerResponseDTO.class);
     }
 
-    public StudentResponseDTO findStudentByEmail(String email){
+    public ManagerResponseDTO findStudentByEmail(String email){
         Student student = studentRepository.findByEmail(email).orElseThrow(() -> new StudentNotFoundException("Aluno não encontrado."));
-        return mapper.map(student, StudentResponseDTO.class);
+        return mapper.map(student, ManagerResponseDTO.class);
     }
 
     
-    public StudentResponseDTO updateStudent(Long id, StudentUpdateRequestDTO studentUpdateRequestDTO){
+    public ManagerResponseDTO updateStudent(Long id, StudentUpdateRequestDTO studentUpdateRequestDTO){
         
         Student student = studentRepository.findById(id)
                                      .orElseThrow(() -> new StudentNotFoundException("Aluno não encontrado."));
@@ -79,7 +77,7 @@ public class StudentService {
         student.setEmail(studentUpdateRequestDTO.getEmail());
         student.setPhoneNumber(studentUpdateRequestDTO.getPhoneNumber());
         Student updatedStudent = studentRepository.save(student);
-        return mapper.map(updatedStudent, StudentResponseDTO.class);
+        return mapper.map(updatedStudent, ManagerResponseDTO.class);
 
     }
 
@@ -88,10 +86,10 @@ public class StudentService {
     }
 
 
-    public StudentResponseDTO findByUsername(String name) {
+    public ManagerResponseDTO findByUsername(String name) {
         final var student = studentRepository.findByUsername(name)
                 .orElseThrow(() -> new StudentNotFoundException("Aluno não encontrado."));
-        return mapper.map(student, StudentResponseDTO.class);
+        return mapper.map(student, ManagerResponseDTO.class);
     }
 
 

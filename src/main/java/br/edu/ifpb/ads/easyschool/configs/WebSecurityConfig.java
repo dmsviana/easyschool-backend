@@ -3,7 +3,8 @@ package br.edu.ifpb.ads.easyschool.configs;
 
 import br.edu.ifpb.ads.easyschool.security.jwt.AuthEntryPointJWT;
 import br.edu.ifpb.ads.easyschool.security.jwt.AuthTokenFilter;
-import br.edu.ifpb.ads.easyschool.security.services.UserDetailsServiceImpl;
+import br.edu.ifpb.ads.easyschool.security.services.CompositeDetailsServiceImpl;
+import br.edu.ifpb.ads.easyschool.security.services.StudentDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +29,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final CompositeDetailsServiceImpl userDetailsService;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {

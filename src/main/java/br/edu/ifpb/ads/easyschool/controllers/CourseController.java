@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ifpb.ads.easyschool.controllers.dtos.request.CoursePostRequestDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.course.CoursePostRequestDTO;
 import br.edu.ifpb.ads.easyschool.controllers.dtos.response.CourseResponseDTO;
 import br.edu.ifpb.ads.easyschool.services.CourseService;
 import jakarta.validation.Valid;

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ifpb.ads.easyschool.controllers.dtos.request.LoginRequestDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.auth.LoginRequestDTO;
 import br.edu.ifpb.ads.easyschool.controllers.dtos.response.MessageResponse;
 import br.edu.ifpb.ads.easyschool.security.jwt.JWTUtils;
 import br.edu.ifpb.ads.easyschool.security.services.UserDetailsImpl;

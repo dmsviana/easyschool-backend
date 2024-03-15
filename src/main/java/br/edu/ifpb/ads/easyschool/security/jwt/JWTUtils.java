@@ -1,6 +1,5 @@
 package br.edu.ifpb.ads.easyschool.security.jwt;
 
-
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
@@ -10,12 +9,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
+import br.edu.ifpb.ads.easyschool.model.Manager;
 import br.edu.ifpb.ads.easyschool.model.Student;
+import br.edu.ifpb.ads.easyschool.model.User;
+import br.edu.ifpb.ads.easyschool.repositories.ManagerRepository;
 import br.edu.ifpb.ads.easyschool.repositories.StudentRepository;
-import br.edu.ifpb.ads.easyschool.security.services.UserDetailsImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -33,6 +35,7 @@ public class JWTUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(JWTUtils.class);
 
     private final StudentRepository studentRepository;
+    private final ManagerRepository managerRepository;
     private final Environment environment;
 
     @Value("${api.app.jwtSecret}")
@@ -44,34 +47,40 @@ public class JWTUtils {
     @Value("${api.app.jwtCookieName}")
     private String jwtCookie;
 
-
-    public String getJwtFromCookies(HttpServletRequest request){
+    public String getJwtFromCookies(HttpServletRequest request) {
         Cookie cookie = WebUtils.getCookie(request, jwtCookie);
-        if(cookie != null){
+        if (cookie != null) {
             return cookie.getValue();
         }
         return null;
     }
 
-
-    public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
-        final Optional<Student> findedStudent = studentRepository.findByUsername(userPrincipal.getUsername());
+    public ResponseCookie generateJwtCookie(UserDetails userPrincipal) {
+        String username = userPrincipal.getUsername();
+        Optional<Student> findedStudent = studentRepository.findByUsername(username);
+        Optional<Manager> findedManager = managerRepository.findByUsername(username);
 
         if (findedStudent.isPresent()) {
             String jwt = generateTokenFromUsername(findedStudent.get());
-            final var builder = ResponseCookie.from(jwtCookie, jwt)
-                    .path("/").maxAge(3600000L)
-                    .secure(true)
-                    .httpOnly(true);
+            return buildJwtCookie(jwt);
+        } else if (findedManager.isPresent()) {
+            String jwt = generateTokenFromUsername(findedManager.get());
+            return buildJwtCookie(jwt);
+        }
+        return null;
+    }
 
-            if (environment.getProperty("spring.profiles.active").equals("dev")) {
-                builder.domain("localhost");
-            }
+    private ResponseCookie buildJwtCookie(String jwt) {
+        final var builder = ResponseCookie.from(jwtCookie, jwt)
+                .path("/").maxAge(3600000L)
+                .secure(true)
+                .httpOnly(true);
 
-            return builder.build();
+        if (environment.getProperty("spring.profiles.active").equals("dev")) {
+            builder.domain("localhost");
         }
 
-        return null;
+        return builder.build();
     }
 
     public String getUserNameFromJwtToken(String token) {
@@ -97,12 +106,12 @@ public class JWTUtils {
         return false;
     }
 
-    public String generateTokenFromUsername(Student studentEntity) {
+    public String generateTokenFromUsername(User userEntity) {
         return Jwts.builder()
-                .claim("id", studentEntity.getId())
-                .setSubject(studentEntity.getUsername())
-                .claim("name", studentEntity.getName())
-                .claim("email", studentEntity.getEmail())
+                .claim("id", userEntity.getId())
+                .setSubject(userEntity.getUsername())
+                .claim("name", userEntity.getName())
+                .claim("email", userEntity.getEmail())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -122,6 +131,5 @@ public class JWTUtils {
 
         return builder.build();
     }
-
 
 }

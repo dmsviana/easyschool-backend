@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ifpb.ads.easyschool.controllers.dtos.request.StudentPostRequestDTO;
-import br.edu.ifpb.ads.easyschool.controllers.dtos.request.StudentUpdateRequestDTO;
-import br.edu.ifpb.ads.easyschool.controllers.dtos.response.StudentResponseDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.student.StudentPostRequestDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.student.StudentUpdateRequestDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.response.ManagerResponseDTO;
 import br.edu.ifpb.ads.easyschool.services.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class StudentController {
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(CREATED)
     @PostMapping()
-    public StudentResponseDTO createStudent(@RequestBody @Valid StudentPostRequestDTO student) {
+    public ManagerResponseDTO createStudent(@RequestBody @Valid StudentPostRequestDTO student) {
         var createdStudent = studentService.createStudent(student);
         return createdStudent;
     }
@@ -42,30 +42,30 @@ public class StudentController {
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(OK)
     @GetMapping("/get-all")
-    public List<StudentResponseDTO> findAllStudents() {
-        List<StudentResponseDTO> responseList = studentService.findAllStudents();
+    public List<ManagerResponseDTO> findAllStudents() {
+        List<ManagerResponseDTO> responseList = studentService.findAllStudents();
         return responseList;
     }
 
     @ResponseStatus(OK)
     @GetMapping("login/{login}")
     @PreAuthorize("hasRole('ADMIN')")
-    public StudentResponseDTO findByUsername(@PathVariable final String username) {
+    public ManagerResponseDTO findByUsername(@PathVariable final String username) {
         final var student = studentService.findByUsername(username);
-        return mapper.map(student, StudentResponseDTO.class);
+        return mapper.map(student, ManagerResponseDTO.class);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(OK)
     @GetMapping("/{studentId}")
-    public StudentResponseDTO findStudentById(@PathVariable Long studentId) {
+    public ManagerResponseDTO findStudentById(@PathVariable Long studentId) {
         return studentService.findStudentById(studentId);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(OK)
     @PutMapping("/{studentId}") 
-    public StudentResponseDTO updateStudent(@PathVariable Long studentId,
+    public ManagerResponseDTO updateStudent(@PathVariable Long studentId,
             @RequestBody @Valid StudentUpdateRequestDTO student) {
         return studentService.updateStudent(studentId, student);
     }
