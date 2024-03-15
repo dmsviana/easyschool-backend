@@ -1,6 +1,8 @@
 package br.edu.ifpb.ads.easyschool.security.services;
 
 import br.edu.ifpb.ads.easyschool.model.Student;
+import br.edu.ifpb.ads.easyschool.model.User;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +18,8 @@ public record UserDetailsImpl(Long id, String username, String email, @JsonIgnor
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public static UserDetailsImpl build(Student studentEntity, List<GrantedAuthority> authorityList) {
-        return new UserDetailsImpl(studentEntity.getId(), studentEntity.getUsername(), studentEntity.getEmail(), studentEntity.getPassword(), authorityList);
+    public static UserDetailsImpl build(User userEntity, List<GrantedAuthority> authorityList) {
+        return new UserDetailsImpl(userEntity.getId(), userEntity.getUsername(), userEntity.getEmail(), userEntity.getPassword(), authorityList);
     }
 
     @Override

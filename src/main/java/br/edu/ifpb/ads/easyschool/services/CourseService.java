@@ -1,7 +1,7 @@
 package br.edu.ifpb.ads.easyschool.services;
 
-import br.edu.ifpb.ads.easyschool.controllers.dtos.request.CoursePostRequestDTO;
-import br.edu.ifpb.ads.easyschool.controllers.dtos.request.CourseUpdateRequestDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.course.CoursePostRequestDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.request.course.CourseUpdateRequestDTO;
 import br.edu.ifpb.ads.easyschool.controllers.dtos.response.CourseResponseDTO;
 import br.edu.ifpb.ads.easyschool.exception.CourseAlreadyExistsException;
 import br.edu.ifpb.ads.easyschool.exception.CourseNotFoundException;

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class StudentResponseDTO {
+public class ManagerResponseDTO {
     
 
     private Long id;

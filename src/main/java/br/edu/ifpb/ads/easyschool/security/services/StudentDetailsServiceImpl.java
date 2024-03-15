@@ -12,18 +12,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class StudentDetailsServiceImpl implements UserDetailsService {
 
     private final StudentRepository studentRepository;
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        final var user = studentRepository.findByUsername(username)
-                .orElseThrow( () -> new UsernameNotFoundException("User not found with username: " + username));
+        final var student = studentRepository.findByUsername(username)
+                .orElseThrow( () -> new UsernameNotFoundException("Student not found with username: " + username));
 
-        final var authorityListAdmin = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN");
         final var authorityListUser = AuthorityUtils.createAuthorityList("ROLE_USER");
-
-        return UserDetailsImpl.build(user, user.isAdmin() ? authorityListAdmin : authorityListUser);
+        return UserDetailsImpl.build(student, authorityListUser);
     }
 }

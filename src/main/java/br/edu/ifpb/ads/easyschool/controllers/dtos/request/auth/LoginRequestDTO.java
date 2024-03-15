@@ -1,4 +1,4 @@
-package br.edu.ifpb.ads.easyschool.controllers.dtos.request;
+package br.edu.ifpb.ads.easyschool.controllers.dtos.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
