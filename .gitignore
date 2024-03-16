@@ -36,5 +36,5 @@ build/
 *.key
 *.pub
 
-**/application-dev.properties
+**/application.properties
 

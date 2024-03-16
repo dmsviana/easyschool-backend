@@ -1,16 +1,16 @@
 package br.edu.ifpb.ads.easyschool.security.services;
 
-import br.edu.ifpb.ads.easyschool.model.Student;
-import br.edu.ifpb.ads.easyschool.model.User;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import br.edu.ifpb.ads.easyschool.model.User;
 
 public record UserDetailsImpl(Long id, String username, String email, @JsonIgnore String password,
                               Collection<? extends GrantedAuthority> authorities) implements UserDetails {

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ifpb.ads.easyschool.controllers.dtos.response.StudentResponseDTO;
-import br.edu.ifpb.ads.easyschool.services.StudentService;
+import br.edu.ifpb.ads.easyschool.security.services.CompositeDetailsServiceImpl;
+import br.edu.ifpb.ads.easyschool.security.services.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -18,11 +18,11 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class MeController {
 
-    private final StudentService studentService;
+    private final CompositeDetailsServiceImpl compositeDetailsService;
 
     @ResponseStatus(OK)
     @GetMapping
-    public StudentResponseDTO findById(Principal principal) {
-        return studentService.findByUsername(principal.getName());
+    public UserDetailsImpl findById(Principal principal) {
+        return (UserDetailsImpl) compositeDetailsService.loadUserByUsername(principal.getName());
     }
 }

@@ -27,6 +27,4 @@ public class DashboardController {
         DashboardDataDTO data = dashboardService.getDashboardData();
         return data;
     }
-
-
 }
