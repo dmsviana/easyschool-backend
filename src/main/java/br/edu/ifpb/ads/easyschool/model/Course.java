@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.time.DayOfWeek;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -37,6 +39,7 @@ public class Course {
 
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Student> students;
 
     @PrePersist

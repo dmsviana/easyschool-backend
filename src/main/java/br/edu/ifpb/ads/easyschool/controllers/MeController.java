@@ -1,15 +1,15 @@
 package br.edu.ifpb.ads.easyschool.controllers;
 
+import static org.springframework.http.HttpStatus.OK;
+
 import java.security.Principal;
 
-import static org.springframework.http.HttpStatus.OK;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import br.edu.ifpb.ads.easyschool.controllers.dtos.response.ManagerResponseDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.response.StudentResponseDTO;
 import br.edu.ifpb.ads.easyschool.services.StudentService;
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +22,7 @@ public class MeController {
 
     @ResponseStatus(OK)
     @GetMapping
-    public ManagerResponseDTO findById(Principal principal) {
+    public StudentResponseDTO findById(Principal principal) {
         return studentService.findByUsername(principal.getName());
     }
 }
