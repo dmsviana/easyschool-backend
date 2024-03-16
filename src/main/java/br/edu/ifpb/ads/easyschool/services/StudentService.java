@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.edu.ifpb.ads.easyschool.controllers.dtos.request.student.StudentPostRequestDTO;
 import br.edu.ifpb.ads.easyschool.controllers.dtos.request.student.StudentUpdateRequestDTO;
-import br.edu.ifpb.ads.easyschool.controllers.dtos.response.ManagerResponseDTO;
+import br.edu.ifpb.ads.easyschool.controllers.dtos.response.StudentResponseDTO;
 import br.edu.ifpb.ads.easyschool.exception.StudentAlreadyExistsException;
 import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
 import br.edu.ifpb.ads.easyschool.model.Student;
@@ -29,7 +29,7 @@ public class StudentService {
 
 
     @Transactional
-    public ManagerResponseDTO createStudent(StudentPostRequestDTO studentRequestDTO) {
+    public StudentResponseDTO createStudent(StudentPostRequestDTO studentRequestDTO) {
         
         if (studentRepository.findByEmail(studentRequestDTO.getEmail()).isPresent()) {
             throw new StudentAlreadyExistsException("Aluno com email " + studentRequestDTO.getEmail() + " já existe");
@@ -41,34 +41,34 @@ public class StudentService {
         studentProducer.publishMessageEmail(createdStudent);
         createdStudent.setPassword(new BCryptPasswordEncoder().encode(createdStudent.getPassword()));
 
-        return mapper.map(createdStudent, ManagerResponseDTO.class);
+        return mapper.map(createdStudent, StudentResponseDTO.class);
     }
 
 
-    public List<ManagerResponseDTO> findAllStudents(){
+    public List<StudentResponseDTO> findAllStudents(){
         List<Student> studentsList = studentRepository.findAll();
 
-        List<ManagerResponseDTO> studentsListDTO = new ArrayList<>();
+        List<StudentResponseDTO> studentsListDTO = new ArrayList<>();
         
         for (Student student : studentsList) {
-            studentsListDTO.add(mapper.map(student, ManagerResponseDTO.class));
+            studentsListDTO.add(mapper.map(student, StudentResponseDTO.class));
         }
 
         return studentsListDTO;
     }
 
-    public ManagerResponseDTO findStudentById(Long id){
+    public StudentResponseDTO findStudentById(Long id){
         Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("Aluno não encontrado."));
-        return mapper.map(student, ManagerResponseDTO.class);
+        return mapper.map(student, StudentResponseDTO.class);
     }
 
-    public ManagerResponseDTO findStudentByEmail(String email){
+    public StudentResponseDTO findStudentByEmail(String email){
         Student student = studentRepository.findByEmail(email).orElseThrow(() -> new StudentNotFoundException("Aluno não encontrado."));
-        return mapper.map(student, ManagerResponseDTO.class);
+        return mapper.map(student, StudentResponseDTO.class);
     }
 
     
-    public ManagerResponseDTO updateStudent(Long id, StudentUpdateRequestDTO studentUpdateRequestDTO){
+    public StudentResponseDTO updateStudent(Long id, StudentUpdateRequestDTO studentUpdateRequestDTO){
         
         Student student = studentRepository.findById(id)
                                      .orElseThrow(() -> new StudentNotFoundException("Aluno não encontrado."));
@@ -77,7 +77,7 @@ public class StudentService {
         student.setEmail(studentUpdateRequestDTO.getEmail());
         student.setPhoneNumber(studentUpdateRequestDTO.getPhoneNumber());
         Student updatedStudent = studentRepository.save(student);
-        return mapper.map(updatedStudent, ManagerResponseDTO.class);
+        return mapper.map(updatedStudent, StudentResponseDTO.class);
 
     }
 
@@ -86,10 +86,10 @@ public class StudentService {
     }
 
 
-    public ManagerResponseDTO findByUsername(String name) {
+    public StudentResponseDTO findByUsername(String name) {
         final var student = studentRepository.findByUsername(name)
                 .orElseThrow(() -> new StudentNotFoundException("Aluno não encontrado."));
-        return mapper.map(student, ManagerResponseDTO.class);
+        return mapper.map(student, StudentResponseDTO.class);
     }
 
 

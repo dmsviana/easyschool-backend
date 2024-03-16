@@ -5,6 +5,7 @@ import br.edu.ifpb.ads.easyschool.controllers.dtos.request.course.CourseUpdateRe
 import br.edu.ifpb.ads.easyschool.controllers.dtos.response.CourseResponseDTO;
 import br.edu.ifpb.ads.easyschool.exception.CourseAlreadyExistsException;
 import br.edu.ifpb.ads.easyschool.exception.CourseNotFoundException;
+import br.edu.ifpb.ads.easyschool.exception.MaximumCapacityExceededException;
 import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
 import br.edu.ifpb.ads.easyschool.model.Course;
 import br.edu.ifpb.ads.easyschool.model.Student;
@@ -26,7 +27,6 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final StudentRepository studentRepository;
     private final ModelMapper mapper;
-
 
     public CourseResponseDTO createCourse(CoursePostRequestDTO courseRequest) {
         if (courseRepository.findByName(courseRequest.getName()).isPresent()) {
@@ -77,6 +77,10 @@ public class CourseService {
 
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new CourseNotFoundException("Curso não encontrado."));
+
+        if (course.getStudents().size() >= course.getMaxCapacity()) {
+            throw new MaximumCapacityExceededException("Capacidade máxima do curso atingida.");
+        }
 
         course.addStudent(student);
         courseRepository.save(course);

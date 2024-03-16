@@ -76,7 +76,8 @@ public class JWTUtils {
                 .secure(true)
                 .httpOnly(true);
 
-        if (environment.getProperty("spring.profiles.active").equals("dev")) {
+        String activeProfile = environment.getProperty("spring.profiles.active", "");
+        if ("dev".equals(activeProfile)) {
             builder.domain("localhost");
         }
 

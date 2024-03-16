@@ -1,5 +1,6 @@
 package br.edu.ifpb.ads.easyschool.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -23,6 +24,7 @@ public class Student extends User {
         
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<Fee> fees = new ArrayList<>();
 
 }
