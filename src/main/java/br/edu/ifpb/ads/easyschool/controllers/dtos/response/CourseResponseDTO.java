@@ -20,20 +20,4 @@ public class CourseResponseDTO {
     private List<Student> students;
 
 
-
-    /*
-    public static CourseResponseDTO convertToDTO(Course course){
-        var cursoDto = new CourseResponseDTO();
-
-        cursoDto.setId(course.getId());
-        cursoDto.setName(course.getName());
-        cursoDto.setDescription(course.getDescription());
-        cursoDto.setDaysOfWeek(course.getDaysOfWeek());
-        cursoDto.setStartTime(course.getStartTime());
-        cursoDto.setEndTime(course.getEndTime());
-        cursoDto.setMaxCapacity(course.getMaxCapacity());
-        cursoDto.setStudents(course.getStudents());
-        return cursoDto;
-    } */
-
 }
