@@ -1,11 +1,6 @@
 package br.edu.ifpb.ads.easyschool.configs;
 
 
-import br.edu.ifpb.ads.easyschool.security.jwt.AuthEntryPointJWT;
-import br.edu.ifpb.ads.easyschool.security.jwt.AuthTokenFilter;
-import br.edu.ifpb.ads.easyschool.security.services.CompositeDetailsServiceImpl;
-import br.edu.ifpb.ads.easyschool.security.services.StudentDetailsServiceImpl;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,13 +18,17 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import br.edu.ifpb.ads.easyschool.security.jwt.AuthTokenFilter;
+import br.edu.ifpb.ads.easyschool.security.services.ManagerDetailsServiceImpl;
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private final CompositeDetailsServiceImpl userDetailsService;
+    private final ManagerDetailsServiceImpl managerDetailsService;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -44,7 +43,7 @@ public class WebSecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setUserDetailsService(managerDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

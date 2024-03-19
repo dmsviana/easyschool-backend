@@ -1,10 +1,12 @@
 package br.edu.ifpb.ads.easyschool.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,16 +43,18 @@ public class TeacherService {
         return mapper.map(createdTeacher, TeacherResponseDTO.class);
     }
 
-    public List<TeacherResponseDTO> findAllTeachers(){
-        List<Teacher> teachersList = teacherRepository.findAll();
-
-        List<TeacherResponseDTO> teachersListDTO = new ArrayList<>();
-        
-        for (Teacher teacher : teachersList) {
-            teachersListDTO.add(mapper.map(teacher, TeacherResponseDTO.class));
-        }
-
-        return teachersListDTO;
+    /**
+     * Retorna uma lista paginada de professores.
+     *
+     * @param pageable Objeto contendo informações de paginação.
+     * @return Uma página de professores.
+     */
+    public Page<TeacherResponseDTO> findAllTeachers(Pageable pageable) {
+        Page<Teacher> teachersPage = teacherRepository.findAll(pageable);
+        List<TeacherResponseDTO> teachersListDTO = teachersPage.getContent().stream()
+                .map(teacher -> mapper.map(teacher, TeacherResponseDTO.class))
+                .collect(Collectors.toList());
+        return new PageImpl<>(teachersListDTO, pageable, teachersPage.getTotalElements());
     }
 
     public TeacherResponseDTO findTeacherById(Long id){

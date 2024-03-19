@@ -28,6 +28,8 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import br.edu.ifpb.ads.easyschool.exception.PermissionDeniedException;
 import br.edu.ifpb.ads.easyschool.exception.StudentAlreadyExistsException;
 import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
+import br.edu.ifpb.ads.easyschool.exception.TeacherAlreadyExistsException;
+import br.edu.ifpb.ads.easyschool.exception.TeacherNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 
@@ -49,10 +51,23 @@ public class GlobalExceptionHandler {
     }
     
     @ExceptionHandler(StudentAlreadyExistsException.class)
-    @ResponseStatus(BAD_REQUEST)
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
     public ApiErrors handleStudentAlreadyExistsException(StudentAlreadyExistsException ex){
         return new ApiErrors(ex.getMessage());
     }
+
+    @ExceptionHandler(TeacherAlreadyExistsException.class)
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
+    public ApiErrors handleTeacherAlreadyExistsException(TeacherAlreadyExistsException ex){
+        return new ApiErrors(ex.getMessage());
+    }
+
+    @ExceptionHandler(TeacherNotFoundException.class)
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
+    public ApiErrors handleTeacherNotFoundException(TeacherNotFoundException ex){
+        return new ApiErrors(ex.getMessage());
+    }
+
 
 
     @ExceptionHandler(MissingRequestHeaderException.class)
