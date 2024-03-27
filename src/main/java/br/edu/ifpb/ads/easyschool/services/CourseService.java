@@ -1,5 +1,14 @@
 package br.edu.ifpb.ads.easyschool.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import br.edu.ifpb.ads.easyschool.controllers.dtos.request.course.CoursePostRequestDTO;
 import br.edu.ifpb.ads.easyschool.controllers.dtos.request.course.CourseUpdateRequestDTO;
 import br.edu.ifpb.ads.easyschool.controllers.dtos.response.CourseResponseDTO;
@@ -9,16 +18,11 @@ import br.edu.ifpb.ads.easyschool.exception.MaximumCapacityExceededException;
 import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
 import br.edu.ifpb.ads.easyschool.model.Course;
 import br.edu.ifpb.ads.easyschool.model.Student;
+import br.edu.ifpb.ads.easyschool.producers.CourseProducer;
 import br.edu.ifpb.ads.easyschool.repositories.CourseRepository;
 import br.edu.ifpb.ads.easyschool.repositories.StudentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +30,8 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final StudentRepository studentRepository;
+    private final CourseProducer courseProducer;
+
     private final ModelMapper mapper;
 
     public CourseResponseDTO createCourse(CoursePostRequestDTO courseRequest) {
@@ -46,16 +52,18 @@ public class CourseService {
         return mapper.map(course, CourseResponseDTO.class);
     }
 
-    public List<CourseResponseDTO> findAllCourses() {
-        List<Course> coursesList = courseRepository.findAll();
-
-        List<CourseResponseDTO> coursesListDTO = new ArrayList<>();
-
-        for (Course course : coursesList) {
-            coursesListDTO.add(mapper.map(course, CourseResponseDTO.class));
-        }
-
-        return coursesListDTO;
+    /**
+     * Retorna uma lista paginada de cursos.
+     *
+     * @param pageable Objeto contendo informações de paginação.
+     * @return Uma página de cursos.
+     */
+    public Page<CourseResponseDTO> findAllCourses(Pageable pageable) {
+        Page<Course> coursesPage = courseRepository.findAll(pageable);
+        List<CourseResponseDTO> coursesListDTO = coursesPage.getContent().stream()
+                .map(course -> mapper.map(course, CourseResponseDTO.class))
+                .collect(Collectors.toList());
+        return new PageImpl<>(coursesListDTO, pageable, coursesPage.getTotalElements());
     }
 
     public CourseResponseDTO updateCourse(Long id, CourseUpdateRequestDTO cursoRequest) {
@@ -84,6 +92,7 @@ public class CourseService {
 
         course.addStudent(student);
         courseRepository.save(course);
+        courseProducer.publishCourseEnrollmentEmail(student, course);
     }
 
     @Transactional

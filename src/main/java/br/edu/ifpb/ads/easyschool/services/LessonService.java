@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.edu.ifpb.ads.easyschool.controllers.dtos.request.lesson.LessonPostRequestDTO;
@@ -55,11 +58,18 @@ public class LessonService {
         return mapper.map(lesson, LessonResponseDTO.class);
     }
 
-    public List<LessonResponseDTO> findAllLessons() {
-        List<Lesson> lessonsList = lessonRepository.findAll();
-        return lessonsList.stream()
-                           .map(lesson -> mapper.map(lesson, LessonResponseDTO.class))
-                           .collect(Collectors.toList());
+    /**
+     * Retorna uma lista paginada de lições.
+     *
+     * @param pageable Objeto contendo informações de paginação.
+     * @return Uma página de lições.
+     */
+    public Page<LessonResponseDTO> findAllLessons(Pageable pageable) {
+        Page<Lesson> lessonsPage = lessonRepository.findAll(pageable);
+        List<LessonResponseDTO> lessonsListDTO = lessonsPage.getContent().stream()
+                .map(lesson -> mapper.map(lesson, LessonResponseDTO.class))
+                .collect(Collectors.toList());
+        return new PageImpl<>(lessonsListDTO, pageable, lessonsPage.getTotalElements());
     }
 
     

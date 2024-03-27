@@ -10,13 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.edu.ifpb.ads.easyschool.controllers.dtos.request.manager.ManagerPostRequestDTO;
 import br.edu.ifpb.ads.easyschool.controllers.dtos.request.manager.ManagerUpdateRequestDTO;
-import br.edu.ifpb.ads.easyschool.controllers.dtos.request.student.StudentUpdateRequestDTO;
 import br.edu.ifpb.ads.easyschool.controllers.dtos.response.ManagerResponseDTO;
 import br.edu.ifpb.ads.easyschool.exception.ManagerAlreadyExistsException;
 import br.edu.ifpb.ads.easyschool.exception.ManagerNotFoundException;
-import br.edu.ifpb.ads.easyschool.exception.StudentNotFoundException;
 import br.edu.ifpb.ads.easyschool.model.Manager;
-import br.edu.ifpb.ads.easyschool.model.Student;
 import br.edu.ifpb.ads.easyschool.repositories.ManagerRepository;
 import lombok.RequiredArgsConstructor;
 

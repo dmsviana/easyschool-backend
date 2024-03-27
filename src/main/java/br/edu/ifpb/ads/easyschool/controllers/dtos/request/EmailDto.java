@@ -8,6 +8,7 @@ import lombok.Setter;
 public class EmailDto {
 
     private Long studentId;
+    private Long courseId;
     private String emailTo;
     private String subject;
     private String text;
